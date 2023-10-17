@@ -39,13 +39,26 @@ dependencies {
     // By wrapping a dependency descriptor in rfg.deobf() method call, the dependency is queued for deobfuscation
     // When deobfuscating, RFG respects the mapping_channel + mapping_version stated in gradle.properties
 
+    implementation "mezz.jei:jei_1.12.2:4.16.1.302"
+
     // Example - CurseMaven dependencies:
     // 'curse.maven:had-enough-items-557549:4543375' << had-enough-items = project slug, 557549 = project id, 4543375 = file id
     // Full documentation: https://cursemaven.com/
 
+    implementation rfg.deobf("curse.maven:code-chicken-lib-1-8-242818:2779848")
+
+    implementation rfg.deobf("curse.maven:top-245211:2667280")
+    implementation rfg.deobf("curse.maven:ctm-267602:2915363")
+
     // Example - Modrinth dependencies:
     // 'maven.modrinth:jei:4.16.1.1000' << jei = project name, 4.16.1.1000 = file version
     // Full documentation: https://docs.modrinth.com/docs/tutorials/maven/
+
+    implementation rfg.deobf("maven.modrinth:gregtech-ce-unofficial:${ceu_version}")
+
+    if (propertyBool('use_gcym')) {
+        implementation rfg.deobf("maven.modrinth:gregicality-multiblocks:${gcym_version}")
+    }
 
     // Common dependency types (configuration):
     // implementation = dependency available at both compile time and runtime
