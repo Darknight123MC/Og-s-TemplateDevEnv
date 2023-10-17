@@ -54,10 +54,10 @@ dependencies {
     // 'maven.modrinth:jei:4.16.1.1000' << jei = project name, 4.16.1.1000 = file version
     // Full documentation: https://docs.modrinth.com/docs/tutorials/maven/
 
-    implementation rfg.deobf("maven.modrinth:gregtech-ce-unofficial:${ceu_version}")
+    implementation rfg.deobf("maven.modrinth:gregtech-ce-unofficial:${propertyString('ceu_version')}")
 
     if (propertyBool('use_gcym')) {
-        implementation rfg.deobf("maven.modrinth:gregicality-multiblocks:${gcym_version}")
+        implementation rfg.deobf("maven.modrinth:gregicality-multiblocks:${propertyString('gcym_version')}")
     }
 
     // Common dependency types (configuration):
