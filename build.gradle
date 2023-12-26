@@ -16,6 +16,8 @@ plugins {
     id 'com.matthewprenger.cursegradle' version '1.4.0' apply false
     id 'com.modrinth.minotaur' version '2.+' apply false
     id 'org.jetbrains.changelog' version '2.2.0'
+    id 'org.jetbrains.kotlin.jvm' version '1.8.0' apply false
+    id 'org.jetbrains.kotlin.kapt' version '1.8.0' apply false
 }
 
 apply from: 'gradle/scripts/helpers.gradle'
@@ -156,6 +158,36 @@ if (propertyBool('use_access_transformer')) {
             tasks.srgifyBinpatchedJar.accessTransformerFiles.from(fileLocation)
         } else {
             throw new GradleException("Access Transformer file [$fileLocation] does not exist!")
+        }
+    }
+}
+
+if (getFile('src/main/kotlin').exists()) {
+    apply plugin: 'org.jetbrains.kotlin.jvm'
+}
+
+// Kotlin
+pluginManager.withPlugin('org.jetbrains.kotlin.jvm') {
+    kotlin {
+        jvmToolchain(8)
+    }
+    def disabledKotlinTaskList = [
+            "kaptGenerateStubsMcLauncherKotlin",
+            "kaptGenerateStubsPatchedMcKotlin",
+            "kaptGenerateStubsInjectedTagsKotlin",
+            "compileMcLauncherKotlin",
+            "compilePatchedMcKotlin",
+            "compileInjectedTagsKotlin",
+            "kaptMcLauncherKotlin",
+            "kaptPatchedMcKotlin",
+            "kaptInjectedTagsKotlin",
+            "kspMcLauncherKotlin",
+            "kspPatchedMcKotlin",
+            "kspInjectedTagsKotlin",
+    ]
+    tasks.configureEach { task ->
+        if (task.name in disabledKotlinTaskList) {
+            task.enabled = false
         }
     }
 }
