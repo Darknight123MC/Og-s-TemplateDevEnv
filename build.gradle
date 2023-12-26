@@ -145,9 +145,24 @@ dependencies {
             transitive = false
         }
     }
+
+     // Kotlin
+    shadowCompile "org.jetbrains.kotlin:kotlin-stdlib:1.8.0"
+    shadowCompile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0"
+    shadowCompile "org.jetbrains.kotlin:kotlin-reflect:1.8.0"
+    shadowCompile "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    shadowCompile "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4"
 }
 
 apply from: 'gradle/scripts/dependencies.gradle'
+
+pluginManager.withPlugin('org.jetbrains.kotlin.kapt') {
+    if (usesMixins.toBoolean()) {
+        dependencies {
+            kapt(mixinProviderSpec)
+        }
+    }
+}
 
 // Adds Access Transformer files to tasks
 if (propertyBool('use_access_transformer')) {
